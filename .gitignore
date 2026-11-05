@@ -1,0 +1,29 @@
+# Dependency yang bisa dipasang ulang
+node_modules/
+
+# Konfigurasi lokal dan kredensial
+.env
+.env.*
+!.env.example
+.demo-accounts*.json
+.npmrc
+*.pem
+*.key
+
+# Hasil tes, build, cache, dan log
+coverage/
+dist/
+build/
+.cache/
+logs/
+*.log
+
+# Backup database; migration .sql tetap di-commit
+*.dump
+*.backup
+*.sql.gz
+
+# Pengaturan editor dan file sistem operasi
+.vscode/
+.DS_Store
+Thumbs.db
