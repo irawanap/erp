@@ -5,6 +5,7 @@ import { AppProviders } from './app/AppProviders'
 import { ProtectedRoute } from './app/ProtectedRoute'
 import { AppShell } from './components/layout/AppShell'
 import { LoginPage } from './features/auth/pages/LoginPage'
+import { DepartmentPage } from './features/departments/pages/DepartmentPage'
 const RegisterPage = lazy(() => import('./features/auth/pages/RegisterPage').then((module) => ({ default: module.RegisterPage })))
 const MfaSetupPage = lazy(() => import('./features/auth/pages/MfaSetupPage').then((module) => ({ default: module.MfaSetupPage })))
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage').then((module) => ({ default: module.DashboardPage })))
@@ -22,6 +23,7 @@ export default function App() {
     <Route element={<ProtectedRoute />}><Route element={<AppShell />}>
       <Route index element={<DashboardPage />} />
       <Route path="account" element={<AccountPage />} />
+      <Route path="departments" element={<DepartmentPage />} />
     </Route></Route>
     <Route path="*" element={<NotFound />} />
   </Routes></Suspense></AppProviders>
