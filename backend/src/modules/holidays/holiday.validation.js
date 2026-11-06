@@ -2,6 +2,7 @@ const {
   z,
   id,
   date,
+  year,
   query,
   partial
 } = require('../../shared/validators/hr');
@@ -19,6 +20,7 @@ module.exports = {
     isActive: z.boolean()
   })),
   query: query.extend({
+    year: year.optional(),
     isActive: z.enum(['true', 'false']).transform(v => v === 'true').optional()
   }).strict()
 };

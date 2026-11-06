@@ -48,3 +48,11 @@ test('reports require ordered and bounded dates', () => {
     endDate: '2030-01-01'
   })).toThrow();
 });
+
+test('holiday year filters accept calendar years and reject invalid ranges', () => {
+  expect(holidays.query.parse({ year: '2026', isActive: 'true' })).toMatchObject({ year: 2026, isActive: true });
+  expect(holidays.query.parse({})).not.toHaveProperty('year');
+  for (const year of ['1899', '2201', '2026.5', 'invalid']) {
+    expect(() => holidays.query.parse({ year })).toThrow();
+  }
+});

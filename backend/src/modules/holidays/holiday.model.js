@@ -11,7 +11,11 @@ async function list(filters) {
   let where = '(name ILIKE $1)';
   if (filters.isActive !== undefined) {
     values.push(filters.isActive);
-    where += ' AND is_active=$2';
+    where += ` AND is_active=$${values.length}`;
+  }
+  if (filters.year !== undefined) {
+    values.push(`${filters.year}-01-01`, `${filters.year + 1}-01-01`);
+    where += ` AND holiday_date >= $${values.length - 1}::date AND holiday_date < $${values.length}::date`;
   }
   return business.page(business.pool, 'FROM "TB_HOLIDAYS"', columns, where, values, filters, 'holiday_date ASC');
 }

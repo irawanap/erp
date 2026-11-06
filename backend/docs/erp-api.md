@@ -55,7 +55,7 @@ Field response employee: id, nik, full_name, department_id, department_name, pos
 | GET | /leave-types/:id | Detail |
 | POST | /leave-types | code, name, requiresBalance (default true), isActive (default true) |
 | PATCH | /leave-types/:id | Field yang diubah |
-| GET | /holidays | page, limit, search, isActive |
+| GET | /holidays | page, limit, search, isActive, year (1900–2200, opsional) |
 | GET | /holidays/:id | Detail |
 | POST | /holidays | holidayDate, name, isActive (default true) |
 | PATCH | /holidays/:id | Field yang diubah; isActive:false untuk nonaktif |

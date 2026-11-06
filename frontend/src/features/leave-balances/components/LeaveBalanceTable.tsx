@@ -1,0 +1,5 @@
+import type { LeaveBalance } from '../leave-balance.types'
+
+export function LeaveBalanceTable({ items, onEdit }: { items: LeaveBalance[]; onEdit?: (item: LeaveBalance) => void }) {
+  return <div className="table-scroll"><table className="data-table"><caption className="sr-only">Saldo cuti karyawan</caption><thead><tr><th scope="col">Karyawan</th><th scope="col">Jenis cuti</th><th scope="col">Tahun</th><th scope="col">Hak</th><th scope="col">Terpakai</th><th scope="col">Tersedia</th>{onEdit && <th scope="col">Aksi</th>}</tr></thead><tbody>{items.map(item => <tr key={item.id}><td>{item.full_name}</td><td>{item.leave_type_name}</td><td>{item.period_year}</td><td>{item.entitlement.toLocaleString('id-ID')}</td><td>{item.used_days.toLocaleString('id-ID')}</td><td><strong>{item.available_days.toLocaleString('id-ID')}</strong></td>{onEdit && <td><button className="button button-edit" aria-label={`Atur saldo ${item.full_name} ${item.leave_type_name}`} onClick={() => onEdit(item)}>Atur saldo</button></td>}</tr>)}</tbody></table></div>
+}

@@ -34,9 +34,16 @@ VITE_ENABLE_REGISTRATION hanya mengatur tampilan pendaftaran. Backend tetap meme
 | /register | Form Employee jika diaktifkan; tanpa pemilihan role atau auto-login |
 | /auth/mfa | Enrollment manual authenticator, konfirmasi, serta recovery codes sekali tampil |
 | / | Dashboard terlindungi: metrik dan pengajuan dari API sesuai role, filter status, pagination |
+| /departments | Daftar, pencarian, pagination, tambah/edit departemen untuk HRD/Admin |
+| /employees | Daftar, filter dan tambah/edit karyawan sesuai role |
+| /employees/:id | Detail karyawan sesuai cakupan akses |
+| /leave-balances | Hak tahunan, pemakaian, sisa saldo dan filter sesuai akses; pengaturan khusus HRD/Admin |
+| /holidays | Hari libur, pencarian, filter tahun/status, tambah/edit khusus HRD/Admin |
+| /leave-types | Daftar, pencarian, filter status dan pengaturan jenis cuti; perubahan khusus HRD/Admin |
+| /users | Administrasi akun, role, status dan pengaitan profil; khusus HRD/Admin |
 | /account | Informasi akun, session aktif, pencabutan session, logout-all, perubahan password |
 
-Halaman lain menampilkan 404. Menu fitur ERP lain ditandai Segera dan dinonaktifkan; belum ada form employee/cuti/approval/laporan di frontend.
+Halaman lain menampilkan 404. Menu fitur ERP lain ditandai Segera dan dinonaktifkan; form cuti, approval, dan laporan belum tersedia di frontend.
 
 ## Alur autentikasi
 
@@ -78,3 +85,19 @@ npm run lint
 Jika muncul Cannot find native binding, pastikan Node aktif memenuhi requirement lalu jalankan `npm install --include=optional`. Paket native harus sesuai platform, misalnya @rolldown/binding-darwin-arm64 pada Mac Apple Silicon. Pertahankan lockfile.
 
 Kontrak backend tersedia di ../backend/docs/erp-api.md dan ../backend/docs/security.md. Gunakan password akun yang dibuat melalui script admin atau data demo lokal; tidak ada password default di frontend.
+
+## Administrasi Users
+
+Menu Users & akses hanya tersedia untuk HRD/Admin. Pembuatan akun dan pengaitan profil adalah dua tindakan terpisah; jika pengaitan gagal, akun yang sudah dibuat tetap ada. Form edit mengirim hanya email/role yang berubah. Role akun sendiri tidak dapat diubah. Pengaitan profil, aktivasi dan penonaktifan meminta verifikasi password serta MFA jika aktif. Tambah/edit meminta verifikasi ulang jika backend mengembalikan masa verifikasi kedaluwarsa. Penonaktifan menggunakan endpoint DELETE yang menonaktifkan akun, bukan menghapus riwayat. Backend tetap melindungi admin terakhir dan hubungan profil yang tidak valid. Password awal tidak disimpan pada browser storage atau ditampilkan kembali setelah akun dibuat.
+
+## Jenis Cuti
+
+Menu Jenis cuti tersedia untuk semua role yang memiliki akses baca. HRD/Admin dapat menambah dan mengedit kode, nama, penggunaan saldo, serta status aktif. Form edit hanya mengirim field yang berubah. Backend menolak perubahan kebijakan saldo atau status jika masih ada pengajuan Submitted. Jenis cuti tidak dihapus permanen; nonaktifkan melalui form edit. Verifikasi ulang ditampilkan jika masa verifikasi backend habis, dan pembatalan dialog mempertahankan isi form.
+
+## Hari Libur
+
+Menu Hari libur tersedia di /holidays. Filter tahun memakai parameter API year (1900–2200), dikombinasikan dengan search dan isActive sebelum pagination. Biarkan tahun kosong untuk semua tahun. Hari libur aktif dikecualikan dari perhitungan hari kerja cuti. HRD/Admin dapat menambah atau mengedit tanggal, nama dan status. Penghapusan permanen tidak tersedia; gunakan status nonaktif. Mutation memerlukan CSRF dan verifikasi ulang sesuai kebijakan backend.
+
+## Saldo Cuti
+
+Menu Saldo cuti menggunakan GET/PUT /leave-balances. Tahun awal mengikuti kalender Asia/Jakarta dan dapat dikosongkan untuk semua tahun. Pilihan karyawan mengikuti scope backend. HRD/Admin menetapkan total entitlement per karyawan, jenis cuti, dan tahun; operasi ini bukan penambahan saldo. used_days tidak dikirim atau direset. Form edit mengunci identitas karyawan, jenis cuti dan tahun, hanya hak cuti yang diubah. Backend menolak entitlement di bawah pemakaian dan jenis cuti tanpa saldo. Tidak ada reset tahunan otomatis.

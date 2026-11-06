@@ -1505,6 +1505,17 @@
                 "false"
               ]
             }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1900,
+              "maximum": 2200
+            },
+            "description": "Filter tahun kalender hari libur"
           }
         ]
       },
