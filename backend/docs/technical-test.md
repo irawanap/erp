@@ -1,6 +1,6 @@
 # Acuan technical test HRD Web Based ERP
 
-Acuan utama: **TECHNICAL TEST HRD WEB BASED ERP-1.pdf** yang diberikan pengguna. Excel sebelumnya dipakai sebagai rancangan tambahan. Implementasi backend mengikuti empat modul wajib PDF; frontend belum dibuat.
+Acuan utama: **TECHNICAL TEST HRD WEB BASED ERP-1.pdf** yang diberikan pengguna. Excel sebelumnya dipakai sebagai rancangan tambahan. Implementasi backend mengikuti empat modul wajib PDF; frontend untuk keempat modul telah tersedia.
 
 ## Pemetaan requirement
 
@@ -72,6 +72,6 @@ Login HRD/Admin membutuhkan enrollment MFA sesuai kebijakan keamanan. Kredensial
 
 ## Cakupan yang tersisa
 
-Empat modul wajib backend tersedia; layar/frontend, pengalaman pengguna, dan pengujian UI belum dibuat. Fitur di luar PDF seperti payroll, attendance, email verification, reset password email, atau passkey belum menjadi bagian implementasi ini. Konfigurasi deployment, backup, monitoring dan pemulihan MFA tetap mengikuti panduan keamanan.
+Empat modul wajib backend dan frontend tersedia. Unit test frontend serta browser E2E dapat dijalankan dari project; lihat [panduan pengujian](../../TESTING.md). Fitur di luar PDF seperti payroll, attendance, email verification, reset password email, atau passkey belum menjadi bagian implementasi ini. Konfigurasi deployment, backup, monitoring dan pemulihan MFA tetap mengikuti panduan keamanan.
 
 Acuan teknis frontend: [erp-api.md](erp-api.md), [openapi.json](openapi.json), dan collection `postman/HRD_ERP_Complete.postman_collection.json`.

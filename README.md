@@ -1,6 +1,6 @@
 # HRD Web Based ERP
 
-HRD technical test untuk pengelolaan karyawan, cuti, approval, dan laporan. Frontend awal tersedia untuk autentikasi, MFA, dashboard sesuai role, serta pengelolaan akun dan session. Form modul ERP lainnya masih dalam pengembangan.
+HRD technical test untuk pengelolaan karyawan, cuti, approval, dan laporan. Frontend tersedia untuk autentikasi/MFA, dashboard sesuai role, pengelolaan akun dan session, departemen, karyawan, user, konfigurasi cuti, pengajuan, approval Supervisor, serta laporan HRD dengan ekspor CSV.
 
 Panduan menjalankan frontend tersedia di [frontend/README.md](frontend/README.md).
 
@@ -43,7 +43,7 @@ npm test
 RUN_DB_TESTS=1 npm test
 ```
 
-Tes integrasi membutuhkan PostgreSQL dan izin CREATE SCHEMA. Setiap suite memakai schema sementara yang dibersihkan setelah tes. Verifikasi backend terakhir: 134 tes lulus, termasuk scope role dan approval bersamaan.
+Tes integrasi membutuhkan PostgreSQL dan izin CREATE SCHEMA. Setiap suite memakai schema sementara yang dibersihkan setelah tes. Verifikasi backend terakhir: 135 tes lulus, termasuk scope role dan approval bersamaan.
 
 ## Struktur
 
@@ -69,3 +69,7 @@ backend/
 - [Arsitektur](backend/docs/architecture.md) dan [keamanan/MFA](backend/docs/security.md)
 
 Kebijakan awal: Senin–Jumat, hari libur aktif dikecualikan, satu approver atasan langsung, saldo tahunan diisi HRD, dan pembatalan hanya Draft/Submitted. Penjelasan batas cakupan dan deployment tersedia dalam dokumentasi backend.
+
+## Pemeriksaan frontend dan browser
+
+Jalankan `cd frontend && npm run check` untuk lint, build, dan unit/component test. Jalankan `npm run test:e2e` dari folder frontend untuk browser test dengan PostgreSQL sementara. Lihat [TESTING.md](TESTING.md) untuk prasyarat, isolasi data, hasil lokal, dan workflow CI.

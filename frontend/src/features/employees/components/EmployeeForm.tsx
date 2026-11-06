@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Notice } from '@/components/common/Notice'
 import type { Department } from '@/features/departments/department.types'
+import { useSupervisorOptions } from '../employee.queries'
+import { messageOf } from '@/lib/api'
 import { employeeSchema } from '../employee.validation'
 import type { EmployeeFormValues } from '../employee.validation'
 
@@ -35,6 +37,7 @@ export function EmployeeForm({
         },
     })
 
+    const supervisors = useSupervisorOptions(true)
     const saving = pending || form.formState.isSubmitting
 
     const fields = [
@@ -138,21 +141,22 @@ export function EmployeeForm({
         </div>
 
         <div className="form-field employee-form-wide">
-            <label htmlFor="employee-supervisor">ID atasan</label>
-
-            <input
+            <label htmlFor="employee-supervisor">Atasan langsung</label>
+            <select
                 id="employee-supervisor"
                 className="text-input"
-                placeholder="Kosongkan jika tanpa atasan"
-                disabled={saving}
+                disabled={saving || !supervisors.isSuccess}
                 aria-invalid={!!form.formState.errors.supervisorId}
                 aria-describedby="employee-supervisor-help employee-supervisor-error"
                 {...form.register('supervisorId')}
-            />
-
-            <p id="employee-supervisor-help" className="field-hint">
-                Gunakan UUID karyawan aktif yang memiliki akun Supervisor.
-            </p>
+            >
+                <option value="">Tanpa atasan</option>
+                {initialValues?.supervisorId && !supervisors.data?.some(item => item.id === initialValues.supervisorId) && <option value={initialValues.supervisorId}>Atasan saat ini (tidak tersedia untuk penugasan baru)</option>}
+                {supervisors.data?.map(item => <option key={item.id} value={item.id}>{item.nik} — {item.full_name}</option>)}
+            </select>
+            <p id="employee-supervisor-help" className="field-hint">Pilihan berisi karyawan aktif dengan akun Supervisor aktif. Backend memeriksa kembali penugasan.</p>
+            {supervisors.isPending && <p role="status">Memuat pilihan atasan…</p>}
+            {supervisors.isError && <><Notice>{messageOf(supervisors.error)}</Notice><button type="button" className="button button-outline" onClick={() => supervisors.refetch()}>Muat ulang atasan</button></>}
 
             <p id="employee-supervisor-error" className="field-error">
                 {form.formState.errors.supervisorId?.message}
@@ -172,7 +176,7 @@ export function EmployeeForm({
             <button
                 type="submit"
                 className="button button-primary"
-                disabled={saving || departments.length === 0}
+                disabled={saving || departments.length === 0 || !supervisors.isSuccess}
             >
                 {saving ? 'Menyimpan…' : 'Simpan'}
             </button>

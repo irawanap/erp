@@ -9,6 +9,7 @@ import {
     getDepartmentOptions,
     getEmployee,
     getEmployees,
+    getSupervisorOptions,
     updateEmployee,
 } from './employee.api'
 import type { EmployeeFilters, EmployeeInput } from './employee.types'
@@ -75,5 +76,14 @@ export function useUpdateEmployee() {
                 client.invalidateQueries({ queryKey: ['dashboard'] }),
             ])
         },
+    })
+}
+
+export function useSupervisorOptions(enabled: boolean) {
+    const { user } = useAuth()
+    return useQuery({
+        queryKey: ['users', user?.id, 'supervisor-options'],
+        queryFn: ({ signal }) => getSupervisorOptions(signal),
+        enabled: enabled && user?.role === 'HRD/Admin',
     })
 }

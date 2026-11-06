@@ -59,3 +59,20 @@ export async function getDepartmentOptions(signal?: AbortSignal) {
     }
     return departments
 }
+
+export async function getSupervisorOptions(signal?: AbortSignal) {
+    const linked = new Set<string>()
+    for (let page = 1; ; page++) {
+        const result = await api.get<PaginatedResponse<{ employee_id: string | null }>>('/users', {
+            params: { page, limit: 100, role: 'Supervisor', isActive: 'true' }, signal,
+        })
+        result.data.data.forEach(user => { if (user.employee_id) linked.add(user.employee_id) })
+        if (page >= result.data.pagination.totalPages) break
+    }
+    const employees: Employee[] = []
+    for (let page = 1; ; page++) {
+        const result = await getEmployees({ page, limit: 100, status: 'Active' }, signal)
+        employees.push(...result.data.filter(employee => linked.has(employee.id)))
+        if (page >= result.pagination.totalPages) return employees
+    }
+}

@@ -13,7 +13,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Node.js minimal 22.12. `.nvmrc` di root memilih Node 22 yang tersedia melalui NVM. Bila belum ada, jalankan `nvm install`. Vite memakai port 5173 secara ketat agar sesuai origin backend. Buka **http://localhost:5173**; jangan mengganti localhost menjadi 127.0.0.1 pada satu sisi karena konfigurasi cookie/origin harus konsisten.
+Gunakan Node.js 22.13+ pada seri 22, atau Node 24+. `.nvmrc` di root memilih Node 22 yang tersedia melalui NVM. Jalankan `nvm install 22` lalu `nvm use 22` untuk memperbarui instalasi lama. Vite memakai port 5173 secara ketat agar sesuai origin backend. Buka **http://localhost:5173**; jangan mengganti localhost menjadi 127.0.0.1 pada satu sisi karena konfigurasi cookie/origin harus konsisten.
 
 Jalankan backend dari terminal terpisah (`cd backend && npm run dev`). `.env.local` frontend menggunakan:
 
@@ -37,13 +37,17 @@ VITE_ENABLE_REGISTRATION hanya mengatur tampilan pendaftaran. Backend tetap meme
 | /departments | Daftar, pencarian, pagination, tambah/edit departemen untuk HRD/Admin |
 | /employees | Daftar, filter dan tambah/edit karyawan sesuai role |
 | /employees/:id | Detail karyawan sesuai cakupan akses |
+| /reports | Laporan penggunaan cuti Approved, filter tanggal/departemen, pagination dan ekspor CSV khusus HRD/Admin |
+| /approvals | Antrean Submitted yang ditugaskan kepada Supervisor, pagination dan tautan tinjau |
+| /leave-requests | Daftar pengajuan, filter status, draft baru untuk akun yang terhubung karyawan |
+| /leave-requests/:id | Detail, durasi kerja, keputusan, edit draft, submit dan pembatalan oleh pemilik |
 | /leave-balances | Hak tahunan, pemakaian, sisa saldo dan filter sesuai akses; pengaturan khusus HRD/Admin |
 | /holidays | Hari libur, pencarian, filter tahun/status, tambah/edit khusus HRD/Admin |
 | /leave-types | Daftar, pencarian, filter status dan pengaturan jenis cuti; perubahan khusus HRD/Admin |
 | /users | Administrasi akun, role, status dan pengaitan profil; khusus HRD/Admin |
 | /account | Informasi akun, session aktif, pencabutan session, logout-all, perubahan password |
 
-Halaman lain menampilkan 404. Menu fitur ERP lain ditandai Segera dan dinonaktifkan; form cuti, approval, dan laporan belum tersedia di frontend.
+Halaman lain menampilkan 404. Menu fitur ERP lain ditandai Segera dan dinonaktifkan; modul yang belum tersedia tetap ditandai Segera.
 
 ## Alur autentikasi
 
@@ -101,3 +105,19 @@ Menu Hari libur tersedia di /holidays. Filter tahun memakai parameter API year (
 ## Saldo Cuti
 
 Menu Saldo cuti menggunakan GET/PUT /leave-balances. Tahun awal mengikuti kalender Asia/Jakarta dan dapat dikosongkan untuk semua tahun. Pilihan karyawan mengikuti scope backend. HRD/Admin menetapkan total entitlement per karyawan, jenis cuti, dan tahun; operasi ini bukan penambahan saldo. used_days tidak dikirim atau direset. Form edit mengunci identitas karyawan, jenis cuti dan tahun, hanya hak cuti yang diubah. Backend menolak entitlement di bawah pemakaian dan jenis cuti tanpa saldo. Tidak ada reset tahunan otomatis.
+
+## Pengajuan Cuti
+
+Pengajuan dibuat untuk profil karyawan milik akun login. Jenis cuti harus aktif; tanggal kerja, saldo, dan atasan divalidasi backend. Draft dapat diedit oleh pemilik, sedangkan Draft/Submitted dapat dibatalkan oleh pemilik. Submit dan pembatalan meminta konfirmasi. Durasi tidak dihitung ulang di browser. Detail menampilkan working_dates dan riwayat approvals. Setelah mutation, cache pengajuan, dashboard dan saldo diperbarui. Keputusan Supervisor tersedia melalui menu Persetujuan tim dan panel pada detail pengajuan.
+
+## Approval Supervisor
+
+Antrean memakai GET /approvals/pending dan hanya ditampilkan kepada Supervisor. Panel keputusan pada detail hanya tersedia untuk approver yang ditugaskan, status Submitted, dan bukan pengajuan sendiri. Komentar wajib 1–2000 karakter. Setujui/tolak selalu meminta verifikasi password serta MFA jika aktif, kemudian POST /leave-requests/:id/approve atau /reject. Backend tetap memeriksa hubungan atasan terkini, status dan saldo secara transaksional. Jika penyimpanan keputusan gagal, komentar dipertahankan; mutation tidak diulang otomatis. Keputusan memperbarui cache approval, pengajuan, dashboard dan saldo.
+
+## Laporan
+
+Menu Laporan hanya tersedia untuk HRD/Admin. Periode awal dari 1 Januari sampai hari ini (Asia/Jakarta). Filter tanggal dan departemen baru berlaku setelah Terapkan; ekspor memakai filter yang sudah diterapkan, bukan isian yang belum disubmit. Rentang maksimal 366 hari mengikuti backend. Laporan mengelompokkan tanggal kerja cuti Approved per karyawan dan jenis cuti; jumlah baris bukan jumlah karyawan unik. CSV dibuat backend, memuat seluruh hasil filter maksimal 10.000 baris dan memerlukan verifikasi ulang jika masa autentikasi habis. Error JSON pada response unduhan Blob dibaca agar pesan backend dan dialog verifikasi tetap berfungsi.
+
+## Menjalankan seluruh pemeriksaan
+
+`npm run check` menjalankan lint, build, typecheck tes, dan 45 unit/component test. `npm run test:e2e` menjalankan alur browser dengan schema PostgreSQL sementara. Prasyarat dan cakupan dijelaskan dalam [TESTING.md](../TESTING.md). Pemilihan atasan pada form Karyawan memakai nama karyawan dengan akun Supervisor aktif, bukan input UUID manual.

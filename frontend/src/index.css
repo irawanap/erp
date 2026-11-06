@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
 :root {
@@ -617,4 +616,61 @@ button svg, a svg { flex-shrink: 0; }
   .balance-filters, .balance-form { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .balance-editor { margin: 16px; }
   .balances-page .table-footer, .balances-page .pagination { justify-content: center; flex-wrap: wrap; }
+}
+
+.leave-requests-page > .panel-header { flex-wrap: wrap; }
+.request-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 20px; border-bottom: 1px solid var(--border); }
+.request-filters .text-input { width: auto; min-width: 200px; }
+.request-own-filter { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.request-own-filter input { accent-color: var(--primary); }
+.request-editor { margin: 20px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.request-editor > .panel-header { background: #f5f9f6; }
+.request-form, .request-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 22px; }
+.request-wide, .request-actions { grid-column: 1 / -1; }
+.request-reason { height: auto; min-height: 110px; resize: vertical; }
+.request-actions, .request-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.request-actions { justify-content: flex-end; }
+.request-detail-actions { padding: 0 22px 22px; }
+.request-details dt { color: #637369; font-size: 13px; margin-bottom: 6px; }
+.request-details dd { font-size: 14px; overflow-wrap: anywhere; }
+.request-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.request-section { padding: 22px; border-top: 1px solid var(--border); }
+.request-section h3 { margin-bottom: 14px; font-weight: 600; }
+.request-section p { font-size: 13px; line-height: 1.7; }
+.request-working-dates { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+.request-working-dates li { padding: 7px 10px; background: #edf6f0; border-radius: 6px; font-size: 12px; }
+.request-approval { padding: 16px; margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; }
+.request-approval small { display: block; margin-top: 10px; color: #637369; }
+.leave-requests-page .table-footer { flex-wrap: wrap; }
+.leave-requests-page .pagination > span { width: auto; min-width: 58px; padding: 0 8px; white-space: nowrap; }
+@media (max-width: 600px) {
+  .request-form, .request-details { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .request-editor { margin: 16px; }
+  .request-filters .text-input { width: 100%; min-width: 0; }
+  .leave-requests-page .table-footer, .leave-requests-page .pagination { justify-content: center; flex-wrap: wrap; }
+}
+
+.approvals-page > .panel-header { flex-wrap: wrap; }
+.approval-panel .form-field { max-width: 720px; margin-top: 16px; }
+.approval-panel .field-hint { margin-top: 10px; }
+.approval-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+.approval-panel > .text-button { display: inline-block; margin-top: 12px; }
+.approvals-page .table-footer { flex-wrap: wrap; }
+.approvals-page .pagination > span { width: auto; min-width: 58px; padding: 0 8px; white-space: nowrap; }
+@media (max-width: 600px) {
+  .approvals-page .table-footer, .approvals-page .pagination { justify-content: center; flex-wrap: wrap; }
+}
+
+.reports-page > .panel-header { flex-wrap: wrap; }
+.report-filters { display: grid; grid-template-columns: repeat(2, minmax(130px, 1fr)) minmax(180px, 1.5fr) auto; align-items: end; gap: 14px; padding: 22px; border-bottom: 1px solid var(--border); }
+.report-filters .text-input { min-width: 0; }
+.report-scope { padding: 18px 22px; border-bottom: 1px solid var(--border); }
+.report-scope strong { font-size: 13px; }
+.report-scope p { margin-top: 7px; font-size: 12px; line-height: 1.7; color: #637369; }
+.reports-page .table-footer { flex-wrap: wrap; }
+.reports-page .pagination > span { width: auto; min-width: 58px; padding: 0 8px; white-space: nowrap; }
+@media (max-width: 900px) { .report-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .report-filters { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .reports-page .table-footer, .reports-page .pagination { justify-content: center; flex-wrap: wrap; }
 }

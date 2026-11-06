@@ -22,6 +22,13 @@ const HolidaysPage = lazy(() => import('./features/holidays/pages/HolidaysPage')
 
 const LeaveBalancesPage = lazy(() => import('./features/leave-balances/pages/LeaveBalancesPage').then(module => ({ default: module.LeaveBalancesPage })))
 
+const LeaveRequestsPage = lazy(() => import('./features/leave-requests/pages/LeaveRequestsPage').then(module => ({ default: module.LeaveRequestsPage })))
+const LeaveRequestDetailPage = lazy(() => import('./features/leave-requests/pages/LeaveRequestDetailPage').then(module => ({ default: module.LeaveRequestDetailPage })))
+
+const ApprovalsPage = lazy(() => import('./features/approvals/pages/ApprovalsPage').then(module => ({ default: module.ApprovalsPage })))
+
+const ReportsPage = lazy(() => import('./features/reports/pages/ReportsPage').then(module => ({ default: module.ReportsPage })))
+
 function NotFound() {
   return <main className="not-found"><span className="section-label">404 · HALAMAN TIDAK DITEMUKAN</span><h1>Sepertinya Anda tersesat.</h1><p>Alamat ini belum tersedia di workspace.</p><Link className="button button-primary" to="/">Kembali ke workspace</Link></main>
 }
@@ -34,6 +41,10 @@ export default function App() {
     <Route element={<ProtectedRoute />}><Route element={<AppShell />}>
       <Route index element={<DashboardPage />} />
       <Route path="account" element={<AccountPage />} />
+      <Route path="reports" element={<ReportsPage />} />
+      <Route path="approvals" element={<ApprovalsPage />} />
+      <Route path="leave-requests" element={<LeaveRequestsPage />} />
+      <Route path="leave-requests/:id" element={<LeaveRequestDetailPage />} />
       <Route path="leave-balances" element={<LeaveBalancesPage />} />
       <Route path="holidays" element={<HolidaysPage />} />
       <Route path="leave-types" element={<LeaveTypesPage />} />
