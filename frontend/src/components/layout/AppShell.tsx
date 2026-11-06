@@ -19,13 +19,14 @@ export function AppShell() {
   const [signingOut, setSigningOut] = useState(false)
   const [error, setError] = useState('')
   const user = auth.user!
-  const page = location.pathname === '/account'
+  const page = location.pathname.startsWith('/employees')
+    ? { section: 'Organisasi', title: 'Karyawan' }
+    : location.pathname === '/account'
     ? { section: 'Pengaturan', title: 'Akun & session' }
     : location.pathname === '/departments'
       ? { section: 'Organisasi', title: 'Departemen' }
       : { section: 'Overview', title: 'Ringkasan workspace' }
   const futureMenus = [
-    { Icon: Users, label: user.role === 'HRD/Admin' ? 'Data karyawan' : user.role === 'Supervisor' ? 'Anggota tim' : 'Profil karyawan' },
     { Icon: CalendarDays, label: 'Pengajuan cuti' },
     ...(user.role === 'Supervisor' ? [{ Icon: ClipboardCheck, label: 'Persetujuan tim' }] : []),
     ...(user.role === 'HRD/Admin' ? [{ Icon: Building2, label: 'Master data' }, { Icon: FileText, label: 'Laporan' }] : []),
@@ -49,6 +50,7 @@ export function AppShell() {
       <nav className="sidebar-nav">
         <span className="nav-section-label">WORKSPACE</span>
         <NavLink to="/" aria-label="Ringkasan" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><LayoutDashboard size={19} /><span>Ringkasan</span><span className="nav-active-dot" /></NavLink>
+        <NavLink to="/employees" aria-label="Karyawan" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><Users size={19} /><span>{user.role === 'HRD/Admin' ? 'Data karyawan' : user.role === 'Supervisor' ? 'Karyawan & tim' : 'Profil karyawan'}</span><span className="nav-active-dot" /></NavLink>
         <NavLink to="/departments" aria-label="Departemen" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><Building2 size={19} /><span>Departemen</span><span className="nav-active-dot" /></NavLink>
         {futureMenus.map(({ Icon, label }) => <button className="nav-item nav-future" disabled key={label} title="Halaman ini akan tersedia pada tahap pengembangan berikutnya"><Icon size={19} /><span>{label}</span><small>Segera</small></button>)}
         <span className="nav-section-label second-section">PREFERENSI</span>
