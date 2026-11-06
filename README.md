@@ -1,6 +1,8 @@
 # HRD Web Based ERP
 
-Backend technical test untuk pengelolaan karyawan, cuti, approval, dan laporan. Frontend belum dibuat; kontrak API tersedia untuk pengembangan berikutnya.
+HRD technical test untuk pengelolaan karyawan, cuti, approval, dan laporan. Frontend awal tersedia untuk autentikasi, MFA, dashboard sesuai role, serta pengelolaan akun dan session. Form modul ERP lainnya masih dalam pengembangan.
+
+Panduan menjalankan frontend tersedia di [frontend/README.md](frontend/README.md).
 
 ## Fitur
 
@@ -55,6 +57,7 @@ backend/
   tests/                Tes per fitur dan integrasi
   docs/                 Kontrak API, keamanan, dan Postman
 ```
+
 
 ## Dokumentasi untuk frontend
 
