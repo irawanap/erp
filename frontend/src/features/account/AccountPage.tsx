@@ -7,7 +7,7 @@ import type { CredentialsProof } from '@/features/auth/auth.types'
 import { messageOf, statusOf } from '@/lib/api'
 import { Notice } from '@/components/common/Notice'
 import { changePassword, getSessions, logoutAll, revokeSession } from './account.api'
-import { SecurityDialog } from './SecurityDialog'
+import { SecurityDialog } from '@/components/common/SecurityDialog'
 
 type Action = { kind: 'session'; id: string; current: boolean } | { kind: 'all' } | { kind: 'password' }
 function dateTime(value: string) {

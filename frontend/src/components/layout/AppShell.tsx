@@ -19,7 +19,11 @@ export function AppShell() {
   const [signingOut, setSigningOut] = useState(false)
   const [error, setError] = useState('')
   const user = auth.user!
-  const accountPage = location.pathname === '/account'
+  const page = location.pathname === '/account'
+    ? { section: 'Pengaturan', title: 'Akun & session' }
+    : location.pathname === '/departments'
+      ? { section: 'Organisasi', title: 'Departemen' }
+      : { section: 'Overview', title: 'Ringkasan workspace' }
   const futureMenus = [
     { Icon: Users, label: user.role === 'HRD/Admin' ? 'Data karyawan' : user.role === 'Supervisor' ? 'Anggota tim' : 'Profil karyawan' },
     { Icon: CalendarDays, label: 'Pengajuan cuti' },
@@ -45,6 +49,7 @@ export function AppShell() {
       <nav className="sidebar-nav">
         <span className="nav-section-label">WORKSPACE</span>
         <NavLink to="/" aria-label="Ringkasan" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><LayoutDashboard size={19} /><span>Ringkasan</span><span className="nav-active-dot" /></NavLink>
+        <NavLink to="/departments" aria-label="Departemen" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><Building2 size={19} /><span>Departemen</span><span className="nav-active-dot" /></NavLink>
         {futureMenus.map(({ Icon, label }) => <button className="nav-item nav-future" disabled key={label} title="Halaman ini akan tersedia pada tahap pengembangan berikutnya"><Icon size={19} /><span>{label}</span><small>Segera</small></button>)}
         <span className="nav-section-label second-section">PREFERENSI</span>
         <NavLink to="/account" aria-label="Akun & session" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => setMobileOpen(false)}><Settings size={19} /><span>Akun & session</span><span className="nav-active-dot" /></NavLink>
@@ -54,7 +59,7 @@ export function AppShell() {
       </div>
     </aside>
     <div className="workspace-main">
-      <header className="topbar"><div className="topbar-title"><button className="mobile-menu icon-button" aria-label="Buka navigasi" aria-expanded={mobileOpen} aria-controls="main-sidebar" onClick={() => setMobileOpen(true)}><Menu size={21} /></button><div><span className="breadcrumb">Workspace <span>/</span> {accountPage ? 'Pengaturan' : 'Overview'}</span><h1>{accountPage ? 'Akun & session' : 'Ringkasan workspace'}</h1></div></div>
+      <header className="topbar"><div className="topbar-title"><button className="mobile-menu icon-button" aria-label="Buka navigasi" aria-expanded={mobileOpen} aria-controls="main-sidebar" onClick={() => setMobileOpen(true)}><Menu size={21} /></button><div><span className="breadcrumb">Workspace <span>/</span> {page.section}</span><h1>{page.title}</h1></div></div>
         <div className="topbar-actions"><span className="workspace-live"><span className="tiny-dot" /> Workspace aktif</span><span className="topbar-divider" />
           <div className="user-menu" onKeyDown={(event) => { if (event.key === 'Escape') setMenuOpen(false) }}><button className="user-menu-trigger" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span className="avatar">{initials(user.email)}</span><span className="user-menu-text"><strong>{user.email.split('@')[0]}</strong><small>{user.role === 'HRD/Admin' ? 'HRD / Admin' : user.role}</small></span><ChevronDown size={16} /></button>
             {menuOpen && <><button className="menu-dismiss" aria-label="Tutup menu akun" onClick={() => setMenuOpen(false)} /><div className="user-dropdown"><p>{user.email}</p><Link to="/account" onClick={() => setMenuOpen(false)}><Settings size={16} /> Pengaturan akun</Link><button onClick={signOut} disabled={signingOut}><LogOut size={16} /> Keluar</button></div></>}

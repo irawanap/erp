@@ -491,3 +491,23 @@ button svg, a svg { flex-shrink: 0; }
   .auth-help { font-size: 10px; }
   .page-intro h2 { font-size: 21px; }
 }
+.departments-page > .panel-header { flex-wrap: wrap; }
+.departments-page > .panel-header h2 { font-size: 20px; font-weight: 600; }
+.department-search { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid var(--color-border, #edf1ed); }
+.department-search .text-input { max-width: 420px; min-width: 0; }
+.department-search .button { flex-shrink: 0; }
+.department-editor { margin: 20px; border: 1px solid #dfe9e1; border-radius: 10px; overflow: hidden; }
+.department-editor > .panel-header { background: #f5f9f6; }
+.department-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px; padding: 22px; }
+.department-form > [role="alert"] { grid-column: 1 / -1; color: #a32f2f; }
+.department-form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; padding-top: 4px; }
+.departments-page .data-table th:last-child, .departments-page .data-table td:last-child { text-align: right; }
+.departments-page .pagination > span { width: auto; min-width: 58px; padding: 0 8px; white-space: nowrap; }
+.departments-page .table-footer { flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .department-editor { margin: 16px; }
+  .department-form { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .department-search { padding: 16px; }
+  .departments-page .table-footer { justify-content: center; }
+  .departments-page .pagination { flex-wrap: wrap; justify-content: center; }
+}
